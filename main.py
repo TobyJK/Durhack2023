@@ -258,6 +258,20 @@ board = [[rook(0), knight(0), bishop(0), queen(0), king(0), bishop(0), knight(0)
          [None, None, None, None, None, None, None, None], 
          [pawn(1), pawn(1), pawn(1), pawn(1), pawn(1), pawn(1), pawn(1), pawn(1)], 
          [rook(1), knight(1), bishop(1), queen(1), king(1), bishop(1), knight(1), rook(1)]]
+toMove = 0
+
+def imports(chars):
+    chars = chars.split(" ")
+    pieces = chars[0].split("/")
+    pieces.reverse()
+    for i in range(8):
+        c = 0
+        for char in pieces[i]:
+            try:
+                t = int(char)
+            except:
+                pass
+
 
 printBoard()
-print(evaluate())
+imports("rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2")
