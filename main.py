@@ -57,6 +57,9 @@ class rook(piece):
 class knight(piece):
     def __init__(self, colour):
         super().__init__(colour)
+    
+    def listMoves(self):
+        print()
 
 class bishop(piece):
     def __init__(self, colour):
