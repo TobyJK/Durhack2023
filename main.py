@@ -64,10 +64,29 @@ class rook(piece):
 class knight(piece):
     def __init__(self, colour):
         super().__init__(colour)
-        self.letter = "P"
+        self.letter = "N"
     
     def listMoves(self):
-        print()
+        for i in range(8):
+            if self in board[i]:
+                position = [i, board[i].index(self)]
+                break
+
+        positions = []
+        maybePositions = [[1, 2], [2, 1], [1, -2], [2, -1], [-1, 2], [-2, 1], [-1, -2], [-2, -1]]
+        
+        for new in maybePositions:
+            if position[0]+new[0] >= 0 and position[1]+new[1] >= 0:
+                try:
+                    if not board[position[0]+new[0]][position[1]+new[1]]:
+                        positions.append(new)
+                    else:
+                        if (self.colour == 0 and board[position[0]+new[0]][position[1]+new[1]].colour == 1) or (self.colour == 1 and board[position[0]+new[0]][position[1]+new[1]].colour == 0):
+                            positions.append(new)
+                except IndexError:
+                    pass
+        
+        return positions
 
 class bishop(piece):
     def __init__(self, colour):
