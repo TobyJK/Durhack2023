@@ -1,4 +1,4 @@
-def printBoard(board):
+def printBoard():
     for i in range(7, -1, -1):
         print(board[i])
 
@@ -190,6 +190,7 @@ class king(piece):
     def __init__(self, colour):
         super().__init__(colour)
         self.letter = "K"
+        self.points = 200
     
     def listMoves(self):
         for i in range(8):
@@ -213,14 +214,50 @@ class king(piece):
         
         return positions
 
+def evaluate():
+    points = 0
+    for row in board:
+        for cell in row:
+            if cell:
+                if cell.colour == 0:
+                    points += cell.points
+                else:
+                    points -= cell.points
+    wmove, bmove = 0, 0
+    for i in range(8):
+        wpawn, bpawn = False, False
+        for j in range(8):
+            if board[j][i]:
+                if board[j][i].letter == "P" and board[j][i].colour == 0 and not wpawn:
+                    wpawn = True
+                elif board[j][i].letter == "P" and board[j][i].colour == 1 and not bpawn:
+                    bpawn = True
+                elif board[j][i].letter == "P" and board[j][i].colour == 0:
+                    points -= 0.3
+                elif board[j][i].letter == "P" and board[j][i].colour == 1:
+                    points += 0.3
+                
+                if board[j][i].letter == "P" and board[j][i].colour == 0 and board[j+1][i]:
+                    points -= 0.3
+                elif board[j][i].letter == "P" and board[j][i].colour == 1 and board[j-1][i]:
+                    points += 0.3
+                
+                if board[j][i].colour == 0:
+                    wmove += len(board[j][i].listMoves())
+                else:
+                    bmove += len(board[j][i].listMoves())
+
+    points = points + (0.1 * wmove) - (0.1 * bmove)
+    return f"+{points:.1f}" if points > 0 else f"{points:.1f}"
+
 board = [[rook(0), knight(0), bishop(0), queen(0), king(0), bishop(0), knight(0), rook(0)], 
          [pawn(0), pawn(0), pawn(0), pawn(0), pawn(0), pawn(0), pawn(0), pawn(0)], 
          [None, None, None, None, None, None, None, None], 
-         [None, None, None, None, queen(0), None, None, None], 
+         [None, None, None, None, None, None, None, None], 
          [None, None, None, None, None, None, None, None], 
          [None, None, None, None, None, None, None, None], 
          [pawn(1), pawn(1), pawn(1), pawn(1), pawn(1), pawn(1), pawn(1), pawn(1)], 
          [rook(1), knight(1), bishop(1), queen(1), king(1), bishop(1), knight(1), rook(1)]]
 
-printBoard(board)
-print(board[3][4].listMoves())
+printBoard()
+print(evaluate())
