@@ -102,6 +102,28 @@ class king(piece):
     def __init__(self, colour):
         super().__init__(colour)
         self.letter = "K"
+    
+    def listMoves(self):
+        for i in range(8):
+            if self in board[i]:
+                position = [i, board[i].index(self)]
+                break
+
+        positions = []
+        maybePositions = [[0, 1], [1, 0], [1, 1], [0, -1], [-1, 0], [-1, -1], [1, -1], [-1, 1]]
+        
+        for new in maybePositions:
+            if position[0]+new[0] >= 0 and position[1]+new[1] >= 0:
+                try:
+                    if not board[position[0]+new[0]][position[1]+new[1]]:
+                        positions.append(new)
+                    else:
+                        if (self.colour == 0 and board[position[0]+new[0]][position[1]+new[1]].colour == 1) or (self.colour == 1 and board[position[0]+new[0]][position[1]+new[1]].colour == 0):
+                            positions.append(new)
+                except IndexError:
+                    pass
+        
+        return positions
 
 board = [[rook(0), knight(0), bishop(0), queen(0), king(0), bishop(0), knight(0), rook(0)], 
          [pawn(0), pawn(0), pawn(0), pawn(0), pawn(0), pawn(0), pawn(0), pawn(0)], 
@@ -113,3 +135,4 @@ board = [[rook(0), knight(0), bishop(0), queen(0), king(0), bishop(0), knight(0)
          [rook(1), knight(1), bishop(1), queen(1), king(1), bishop(1), knight(1), rook(1)]]
 
 printBoard(board)
+print(board[0][4].listMoves())
